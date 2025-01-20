@@ -80,7 +80,6 @@ add_executable(os1r ${SOURCES}
         src/entity-placement.hpp
         src/entity-pool.cpp
         src/entity-pool.hpp
-        src/FramesMappings.h
         src/game-loop-ticker.h
         src/Game.cpp
         src/Game.h

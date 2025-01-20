@@ -8,7 +8,6 @@
 #define TEX_GHZ_GIMM 1
 #define TEX_GHZ_TILES 2
 
-#include "../FramesMappings.h"
 #include "Camera.h"
 #include "entity-types.hpp"
 

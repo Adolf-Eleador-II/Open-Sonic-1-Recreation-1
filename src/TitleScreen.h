@@ -7,12 +7,6 @@
 #include "core/game_enviroment/artist/ArtistStructs.h"
 #include <memory>
 
-const Frame framesTitleSonic[] = {
-    Frame(257, 0, 72, 88),  Frame(330, 8, 80, 80),  Frame(411, 8, 80, 80),
-    Frame(492, 0, 80, 88),  Frame(257, 97, 72, 88), Frame(330, 89, 88, 96),
-    Frame(419, 89, 88, 96), Frame(508, 89, 88, 96),
-};
-
 class TitleScreen {
 public:
     TitleScreen(Screen &scr) : scr(scr), cam(scr) {

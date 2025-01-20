@@ -12,8 +12,6 @@
 
 #include "sonic/SonicResources.h"
 
-#include "FramesMappings.h"
-
 #include "AudioMappings.h"
 #include <memory>
 #include <utility>
