@@ -44,7 +44,8 @@ public:
         int act,
         v2f playerStartPosition,
         terrain::Store<terrain::Tile>& storeTile,
-        std::unique_ptr<artist_api::Texture> texBlocks
+        std::unique_ptr<artist_api::Texture> texBlocks,
+        ResourceStore &store
     ) 
         : m_terrain(terrain)
         , cam(scr)
@@ -59,8 +60,9 @@ public:
         , m_playerStartPosition(playerStartPosition)
         , m_terrainDrawer(cam, m_terrain.getChunkStore(), m_terrain.getLayout(), 255, storeTile, std::move(texBlocks))
         , bg(m_terrainDrawer)
+        , store_(store)
     {
-        EntityCreatorSonic1 ec(m_entityPool, m_terrain, scr.store());
+        EntityCreatorSonic1 ec(m_entityPool, m_terrain, store);
         
         for (auto& plc : entities) {
             m_entityPool.create(ec.create(plc));
@@ -79,6 +81,7 @@ public:
     terrain::TerrainDrawer& getTerrainDrawer() { return m_terrainDrawer; } 
 
 private:
+    ResourceStore &store_;
     terrain::Terrain &m_terrain;
 
     EntityPool  m_entityPool;
@@ -99,7 +102,6 @@ private:
     Camera cam;
 
     std::list<Entity*>::iterator it;
-    LevelInformer* lvInformer = nullptr;
 
     int rings = 0;
     int score = 0;

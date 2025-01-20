@@ -17,11 +17,13 @@ public:
     LevelLoader(
         Screen& screen,
         IInputMgr& input,
-        Audio& audio
+        Audio& audio,
+        ResourceStore &store
     ) 
         : m_screen(screen) 
         , m_audio(audio)
         , m_input(input)
+        , store_(store)
     {}
 
     Level* loadFromSonic1(ZoneSonic1 zone, int act);
@@ -43,6 +45,7 @@ private:
 
     std::vector<EntityPlacement> m_entityPlacementList;
 private:
+    ResourceStore &store_;
     void reset();
 
     void sonic1LoadTerrain(std::string& sZone, std::string& sZoneAct);

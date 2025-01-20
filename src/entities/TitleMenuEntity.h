@@ -111,8 +111,8 @@ private:
 
 class MenuEntity : public entity_v3::Entity {
 public:
-    MenuEntity(std::vector<std::unique_ptr<MenuElement>> elementList)
-        : elementList_(std::move(elementList)) {}
+    MenuEntity(std::vector<std::unique_ptr<MenuElement>> elementList, ResourceStore &store)
+        : elementList_(std::move(elementList)), store_(store) {}
 
     entity_v3::EntityID type() override { return 0; }
 
@@ -155,10 +155,8 @@ public:
         for (auto &el : elementList_) {
             auto &str = el->displayName();
 
-            auto &st = ctx.deprecatedScreen.store();
-
-            auto &font = st.get<artist_api::SpriteFont>(
-                st.map<SonicResources>().fonts.general);
+            auto &font = store_.get<artist_api::SpriteFont>(
+                store_.map<SonicResources>().fonts.general);
 
             ctx.artist.drawText(
                 str, {.x = pos.x, .y = pos.y}, font,
@@ -174,6 +172,7 @@ public:
     }
 
 private:
+    ResourceStore &store_;
     std::vector<std::unique_ptr<MenuElement>> elementList_;
     int cursor_ = 0;
 };
@@ -215,8 +214,8 @@ private:
 
 class TitleMenuEntity : public entity_v3::Entity {
 public:
-    explicit TitleMenuEntity(TitleScreen &titleScreen)
-        : titleScreen_(titleScreen), mainMenu_(mainMenuConstruct()) {}
+    explicit TitleMenuEntity(TitleScreen &titleScreen, ResourceStore &store)
+        : titleScreen_(titleScreen), mainMenu_(mainMenuConstruct(),store) {}
 
     void onUpdate(const entity_v3::UpdateContext &ctx) override {
         mainMenu_.onUpdate(ctx);

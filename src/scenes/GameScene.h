@@ -11,7 +11,8 @@
 class GameScene : public Scene {
 public:
     explicit GameScene(GameEnvironment &env,
-                       DeprecatedGameEnvironment &deprEnv);
+                       DeprecatedGameEnvironment &deprEnv,
+                       ResourceStore &store);
 
 public:
     void onStart(const SceneStartContext &ctx) override {

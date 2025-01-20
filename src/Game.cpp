@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "core/game_enviroment/EntityContext.h"
+#include "scenes/TitleScreenScene.h"
 
 #define TEX_OBJECTS 0
 #define TEX_GHZ_GIMM 1
@@ -45,6 +46,6 @@ Game::Game(GameEnvironment &env, SfmlArtist &sfmlArtist,
 
     store_.loadMapping(loadResourcesFun(store_, env, deprEnv_));
 
-    sceneDirector_.add(std::make_unique<TitleScreenScene>(deprEnv_));
-    sceneDirector_.add(std::make_unique<GameScene>(env, deprEnv_));
+    sceneDirector_.add(std::make_unique<TitleScreenScene>(deprEnv_,store_));
+    sceneDirector_.add(std::make_unique<GameScene>(env, deprEnv_,store_));
 }

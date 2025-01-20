@@ -106,9 +106,9 @@ void Player::d_draw(Camera &cam) {
 
     Screen &scr = cam.getScr();
 
-    auto fontResourceId = scr.store().map<SonicResources>().fonts.general;
-    auto &font = scr.store().get<artist_api::SpriteFont>(fontResourceId);
-
+    auto fontResourceId = store_.map<SonicResources>().fonts.general;
+    auto &font = store_.get<artist_api::SpriteFont>(fontResourceId);
+    
     scr.artist().drawText(dbInfo, {.x = 427 - 256.f, .y = 8},
                           font);
 

@@ -16,52 +16,51 @@ void Level::create() {
     }
 
     m_entityPool.create(new TitleCardSonic1(
-        m_zoneName, m_act, 427, m_entityPool));
+        m_zoneName, m_act, 427, m_entityPool, store_));
 
     if (m_gameType == GameType::SONIC_1) {
         createZoneSpecific();
     }
 
     // Create player
-    auto &st = m_screen.store();
     PlayerAnimations animsSonic = {
-        st.get<artist_api::Animation>(st.map<SonicResources>().animations.sonic.idle),
-        st.get<artist_api::Animation>(st.map<SonicResources>().animations.sonic.boredStart),
-        st.get<artist_api::Animation>(st.map<SonicResources>().animations.sonic.bored),
+        store_.get<artist_api::Animation>(store_.map<SonicResources>().animations.sonic.idle),
+        store_.get<artist_api::Animation>(store_.map<SonicResources>().animations.sonic.boredStart),
+        store_.get<artist_api::Animation>(store_.map<SonicResources>().animations.sonic.bored),
 
-        st.get<artist_api::Animation>(st.map<SonicResources>().animations.sonic.walk),
+        store_.get<artist_api::Animation>(store_.map<SonicResources>().animations.sonic.walk),
 
-        st.get<artist_api::Animation>(st.map<SonicResources>().animations.sonic.run),
+        store_.get<artist_api::Animation>(store_.map<SonicResources>().animations.sonic.run),
 
-        st.get<artist_api::Animation>(st.map<SonicResources>().animations.sonic.dash),
+        store_.get<artist_api::Animation>(store_.map<SonicResources>().animations.sonic.dash),
 
-        st.get<artist_api::Animation>(st.map<SonicResources>().animations.sonic.sit),
+        store_.get<artist_api::Animation>(store_.map<SonicResources>().animations.sonic.sit),
 
-        st.get<artist_api::Animation>(st.map<SonicResources>().animations.sonic.roll),
-        st.get<artist_api::Animation>(st.map<SonicResources>().animations.sonic.skidStart),
-        st.get<artist_api::Animation>(st.map<SonicResources>().animations.sonic.skid),
-        st.get<artist_api::Animation>(st.map<SonicResources>().animations.sonic.hurt),
-        st.get<artist_api::Animation>(st.map<SonicResources>().animations.sonic.die),
-        st.get<artist_api::Animation>(st.map<SonicResources>().animations.sonic.push),
-        st.get<artist_api::Animation>(st.map<SonicResources>().animations.sonic.lookUp),
+        store_.get<artist_api::Animation>(store_.map<SonicResources>().animations.sonic.roll),
+        store_.get<artist_api::Animation>(store_.map<SonicResources>().animations.sonic.skidStart),
+        store_.get<artist_api::Animation>(store_.map<SonicResources>().animations.sonic.skid),
+        store_.get<artist_api::Animation>(store_.map<SonicResources>().animations.sonic.hurt),
+        store_.get<artist_api::Animation>(store_.map<SonicResources>().animations.sonic.die),
+        store_.get<artist_api::Animation>(store_.map<SonicResources>().animations.sonic.push),
+        store_.get<artist_api::Animation>(store_.map<SonicResources>().animations.sonic.lookUp),
 
-        st.get<artist_api::Animation>(st.map<SonicResources>().animations.sonic.spring),
-        st.get<artist_api::Animation>(st.map<SonicResources>().animations.sonic.fall),
+        store_.get<artist_api::Animation>(store_.map<SonicResources>().animations.sonic.spring),
+        store_.get<artist_api::Animation>(store_.map<SonicResources>().animations.sonic.fall),
 
         
         
-        st.get<artist_api::Animation>(st.map<SonicResources>().animations.killScore.n10),
-        st.get<artist_api::Animation>(st.map<SonicResources>().animations.killScore.n100),
-        st.get<artist_api::Animation>(st.map<SonicResources>().animations.killScore.n200),
-        st.get<artist_api::Animation>(st.map<SonicResources>().animations.killScore.n500),
-        st.get<artist_api::Animation>(st.map<SonicResources>().animations.killScore.n1_000),
-        st.get<artist_api::Animation>(st.map<SonicResources>().animations.killScore.n10_000),
+        store_.get<artist_api::Animation>(store_.map<SonicResources>().animations.killScore.n10),
+        store_.get<artist_api::Animation>(store_.map<SonicResources>().animations.killScore.n100),
+        store_.get<artist_api::Animation>(store_.map<SonicResources>().animations.killScore.n200),
+        store_.get<artist_api::Animation>(store_.map<SonicResources>().animations.killScore.n500),
+        store_.get<artist_api::Animation>(store_.map<SonicResources>().animations.killScore.n1_000),
+        store_.get<artist_api::Animation>(store_.map<SonicResources>().animations.killScore.n10_000),
     };
 
     // auto &animStore = st.map<SonicResources>().animations.sonic;
     m_entityPool.create(new Player(
         m_playerStartPosition, animsSonic, m_entityPool.legacy_rawPool(), m_entityPool, cam,
-        m_terrain, m_input, m_audio, rings, score));
+        m_terrain, m_input, m_audio, rings, score, store_));
 
     // Create camera
     auto screenSize = Size(427, 240);
@@ -161,21 +160,6 @@ void Level::createZoneSpecific() {
 }
 
 void Level::update() {
-    if (lvInformer) {
-        if (lvInformer->getType() == LevelInformer::T_ROUND_CLEAR &&
-            lvInformer->getTick() == 0)
-            m_audio.dj().playMusic(m_audio.store().get<dj::Music>(
-                m_audio.store().map<SonicResources>().music.stageClear));
-
-        if (lvInformer->isDone()) {
-            if (isTimeStopped)
-                isFadeOut = true;
-            else {
-                delete lvInformer;
-                lvInformer = nullptr;
-            }
-        }
-    }
 
     if (!isFadeDeath) {
         if (!isFadeOut) {
@@ -267,19 +251,11 @@ void Level::draw() {
     m_entityPool.draw();
 
     drawHud();
-
-    if (lvInformer && isTimeStopped)
-        lvInformer->draw();
-
-    if (lvInformer && !isTimeStopped)
-        lvInformer->draw();
 }
 
 void Level::drawHud() {
-    auto &st = m_screen.store();
-
     auto &hudTex =
-        st.get<artist_api::Texture>(st.map<SonicResources>().textures.hud);
+        store_.get<artist_api::Texture>(store_.map<SonicResources>().textures.hud);
     auto &artist = m_screen.artist();
 
     artist.drawSprite(
@@ -304,8 +280,8 @@ void Level::drawHud() {
     auto minutes = time / 60;
     auto seconds = time % 60;
 
-    auto &font = st.get<artist_api::SpriteFont>(
-        st.map<SonicResources>().fonts.s1HudDigits);
+    auto &font = store_.get<artist_api::SpriteFont>(
+        store_.map<SonicResources>().fonts.s1HudDigits);
 
     m_screen.artist().drawText(std::format("{:6d}", score), {.x = 64, .y = 8},
                                font);
@@ -315,4 +291,4 @@ void Level::drawHud() {
                                font);
 }
 
-void Level::free() { delete lvInformer; }
+void Level::free() {}
