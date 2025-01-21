@@ -12,10 +12,10 @@ namespace terrain {
 
 class TerrainDrawer {
 public:
-    TerrainDrawer(Camera &camera, Store<Chunk> &storeChunk, Layout &layout,
-                  uint8_t textureId, Store<Tile> &storeTiles, std::unique_ptr<artist_api::Texture> texTiles)
+    TerrainDrawer(Camera &camera, Store<Chunk> &storeChunk, Layout &layout, uint8_t textureId,
+                  Store<Tile> &storeTiles, std::unique_ptr<artist_api::Texture> texTiles, artist_api::Artist &artist)
         : m_camera(camera), m_layout(layout), m_storeChunk(storeChunk),
-          m_textureId(textureId), m_storeTiles(storeTiles), m_tex(std::move(texTiles)) {}
+          m_textureId(textureId), m_storeTiles(storeTiles), m_tex(std::move(texTiles)), artist_(artist) {}
 
     virtual ~TerrainDrawer() = default;
 
@@ -34,6 +34,7 @@ public:
     void drawChunkPartById(int chunkId, v2f pos, irect rect) const;
 
 private:
+    artist_api::Artist &artist_;
     Camera &m_camera;
     Layout &m_layout;
     Store<Chunk> &m_storeChunk;

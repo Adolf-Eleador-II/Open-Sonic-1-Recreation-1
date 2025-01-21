@@ -38,7 +38,8 @@ Game::Game(GameEnvironment &env, SfmlArtist &sfmlArtist,
            const LoadResourcesFunction &loadResourcesFun)
     : sceneDirector_(entityPoolEventLoop_.pool(), sceneCtxs_),
       deprAudio_(env.dj(), store_),
-      deprScreen_(sfmlArtist, store_, env.textureLoader()),
+      deprScreen_(env.textureLoader()),
+      artist_(sfmlArtist),
       deprEnv_(
           DeprecatedGameEnvironment{.scr = deprScreen_, .audio = deprAudio_}),
       env_(env), entityPoolEventLoop_(entCtxs_) {
@@ -46,6 +47,6 @@ Game::Game(GameEnvironment &env, SfmlArtist &sfmlArtist,
 
     store_.loadMapping(loadResourcesFun(store_, env, deprEnv_));
 
-    sceneDirector_.add(std::make_unique<TitleScreenScene>(deprEnv_,store_));
-    sceneDirector_.add(std::make_unique<GameScene>(env, deprEnv_,store_));
+    sceneDirector_.add(std::make_unique<TitleScreenScene>(deprEnv_,store_,artist_));
+    sceneDirector_.add(std::make_unique<GameScene>(env, deprEnv_,store_,artist_));
 }

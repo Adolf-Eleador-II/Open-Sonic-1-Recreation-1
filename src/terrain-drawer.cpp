@@ -73,8 +73,6 @@ void TerrainDrawer::drawChunk(const Chunk &chunk, float x, float y) const {
         for (int j = 0; j < chunk.getRadius(); j++) {
             auto block = chunk.getBlock(j, i);
 
-            auto& artist = m_camera.getScr().artist();
-
             artist_api::Rect rect = {
                 .x = 0,
                 .y = static_cast<float>(block.blockId * TERRAIN_TILE_SIZE),
@@ -92,7 +90,7 @@ void TerrainDrawer::drawChunk(const Chunk &chunk, float x, float y) const {
                 static_cast<float>(16 * block.yFlip)
             };
 
-            artist.drawSprite(artist_api::Sprite {
+            artist_.drawSprite(artist_api::Sprite {
                 .texture = *m_tex,
                 .rect = rect,
                 .offset = offset
@@ -137,7 +135,7 @@ void terrain::TerrainDrawer::drawChunkBlockDebug(terrain::ChunkBlock &block,
     color.alpha = ((i + j) % 2) ? 0xF0 : 0xD0;
 
     if (block.solidityNormalLayer != BlockSolidity::EMPTY)
-        m_camera.getScr().artist().drawSprite(spr, pos, {.blending = color});
+        artist_.drawSprite(spr, pos, {.blending = color});
 }
 
 void terrain::TerrainDrawer::drawChunkById(int chunkId, float x,

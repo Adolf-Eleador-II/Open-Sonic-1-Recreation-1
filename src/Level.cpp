@@ -16,7 +16,7 @@ void Level::create() {
     }
 
     m_entityPool.create(new TitleCardSonic1(
-        m_zoneName, m_act, 427, m_entityPool, store_));
+        m_zoneName, m_act, 427, m_entityPool, store_, artist_));
 
     if (m_gameType == GameType::SONIC_1) {
         createZoneSpecific();
@@ -59,7 +59,7 @@ void Level::create() {
 
     // auto &animStore = st.map<SonicResources>().animations.sonic;
     m_entityPool.create(new Player(
-        m_playerStartPosition, animsSonic, m_entityPool.legacy_rawPool(), m_entityPool, cam,
+        m_playerStartPosition, artist_, animsSonic, m_entityPool.legacy_rawPool(), m_entityPool, cam,
         m_terrain, m_input, m_audio, rings, score, store_));
 
     // Create camera
@@ -101,7 +101,7 @@ auto fromMDColor(uint16_t mdcolor) {
 
 void Level::createZoneSpecific() {
     if (m_zoneNameShort == "GHZ") {
-        m_screen.artist().setBackgroundColor(fromMDColor(0x08E0));
+        artist_.setBackgroundColor(fromMDColor(0x08E0));
 
         bg.create(0x3C, 3);
         bg.addLayer(0, 32, 0.001, 0.5);
@@ -113,23 +113,23 @@ void Level::createZoneSpecific() {
         for (int i = 0; i < 104 / waterDiv; i++)
             bg.addLayer(152 + i * waterDiv, waterDiv, 0.060 + (float)i / 25.0);
     } else if (m_zoneNameShort == "LZ") {
-        m_screen.artist().setBackgroundColor(fromMDColor(0x0000));
+        artist_.setBackgroundColor(fromMDColor(0x0000));
         bg.create(0x32, 7);
         bg.addLayer(0, 256, 0.005);
     } else if (m_zoneNameShort == "MZ") {
-        m_screen.artist().setBackgroundColor(fromMDColor(0x00a0));
+        artist_.setBackgroundColor(fromMDColor(0x00a0));
         bg.create(0x36, 2);
         bg.addLayer(0, 256, 0.005);
     } else if (m_zoneNameShort == "SBZ") {
-        m_screen.artist().setBackgroundColor(fromMDColor(0x6400));
+        artist_.setBackgroundColor(fromMDColor(0x6400));
         bg.create(0x34, 4);
         bg.addLayer(0, 256, 0.005);
     } else if (m_zoneNameShort == "SLZ") {
-        m_screen.artist().setBackgroundColor(fromMDColor(0x0000));
+        artist_.setBackgroundColor(fromMDColor(0x0000));
         bg.create(0x30, 1);
         bg.addLayer(0, 256, 0.005);
     } else if (m_zoneNameShort == "SYZ") {
-        m_screen.artist().setBackgroundColor(fromMDColor(0x6260));
+        artist_.setBackgroundColor(fromMDColor(0x6260));
         bg.create(0x3D, 2);
         bg.addLayer(0, 256, 0.005);
     }
@@ -256,7 +256,7 @@ void Level::draw() {
 void Level::drawHud() {
     auto &hudTex =
         store_.get<artist_api::Texture>(store_.map<SonicResources>().textures.hud);
-    auto &artist = m_screen.artist();
+    auto &artist = artist_;
 
     artist.drawSprite(
         artist_api::Sprite{
@@ -283,11 +283,11 @@ void Level::drawHud() {
     auto &font = store_.get<artist_api::SpriteFont>(
         store_.map<SonicResources>().fonts.s1HudDigits);
 
-    m_screen.artist().drawText(std::format("{:6d}", score), {.x = 64, .y = 8},
+    artist_.drawText(std::format("{:6d}", score), {.x = 64, .y = 8},
                                font);
-    m_screen.artist().drawText(std::format("{:d}:{:02d}", minutes, seconds),
+    artist_.drawText(std::format("{:d}:{:02d}", minutes, seconds),
                                {.x = 56, .y = 24}, font);
-    m_screen.artist().drawText(std::format("{:3d}", rings), {.x = 64, .y = 40},
+    artist_.drawText(std::format("{:3d}", rings), {.x = 64, .y = 40},
                                font);
 }
 

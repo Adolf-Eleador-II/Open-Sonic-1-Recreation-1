@@ -23,9 +23,9 @@ void EnCrab::d_update() {
             animator_.setSpeed(0.0f);
             if (!bulFlag) {
                 entities->push_back(
-                    new Bullet(v2f(dv_pos.x - 18, dv_pos.y - 8), animationBullet_, 1, -1));
+                    new Bullet(v2f(dv_pos.x - 18, dv_pos.y - 8), artist_, animationBullet_, 1, -1));
                 entities->push_back(
-                    new Bullet(v2f(dv_pos.x + 18, dv_pos.y - 8), animationBullet_, 1, 1));
+                    new Bullet(v2f(dv_pos.x + 18, dv_pos.y - 8), artist_, animationBullet_, 1, 1));
                 bulFlag = true;
             }
         }

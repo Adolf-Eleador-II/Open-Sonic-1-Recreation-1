@@ -111,8 +111,8 @@ private:
 
 class MenuEntity : public entity_v3::Entity {
 public:
-    MenuEntity(std::vector<std::unique_ptr<MenuElement>> elementList, ResourceStore &store)
-        : elementList_(std::move(elementList)), store_(store) {}
+    MenuEntity(std::vector<std::unique_ptr<MenuElement>> elementList, ResourceStore &store, artist_api::Artist &artist)
+        : elementList_(std::move(elementList)), store_(store), artist_(artist) {}
 
     entity_v3::EntityID type() override { return 0; }
 
@@ -155,8 +155,11 @@ public:
         for (auto &el : elementList_) {
             auto &str = el->displayName();
 
+            // auto &st = ctx.deprecatedScreen.store();
+
             auto &font = store_.get<artist_api::SpriteFont>(
                 store_.map<SonicResources>().fonts.general);
+
 
             ctx.artist.drawText(
                 str, {.x = pos.x, .y = pos.y}, font,
@@ -172,6 +175,7 @@ public:
     }
 
 private:
+    artist_api::Artist &artist_;
     ResourceStore &store_;
     std::vector<std::unique_ptr<MenuElement>> elementList_;
     int cursor_ = 0;
@@ -179,7 +183,8 @@ private:
 
 class TitlePressStartEntity : public entity_v3::Entity {
 public:
-    explicit TitlePressStartEntity(artist_api::Texture& texTitle) : texTitle_(texTitle) {}
+    explicit TitlePressStartEntity(artist_api::Texture& texTitle, artist_api::Artist &artist)
+            : texTitle_(texTitle), artist_(artist) {}
 
     entity_v3::EntityID type() override { return 2; }
 
@@ -193,7 +198,7 @@ public:
         if (tick_ % 40 < 20)
             return;
 
-        ctx.deprecatedScreen.artist().drawSprite({
+        artist_.drawSprite({
             .texture = texTitle_,
             .rect = {.x = 56.0,
                     .y = 158.0,
@@ -208,14 +213,15 @@ public:
     }
 
 private:
+    artist_api::Artist &artist_;
     int tick_ = 0;
     artist_api::Texture& texTitle_;
 };
 
 class TitleMenuEntity : public entity_v3::Entity {
 public:
-    explicit TitleMenuEntity(TitleScreen &titleScreen, ResourceStore &store)
-        : titleScreen_(titleScreen), mainMenu_(mainMenuConstruct(),store) {}
+    explicit TitleMenuEntity(TitleScreen &titleScreen, ResourceStore &store, artist_api::Artist &artist)
+        : titleScreen_(titleScreen), mainMenu_(mainMenuConstruct(),store,artist) {}
 
     void onUpdate(const entity_v3::UpdateContext &ctx) override {
         mainMenu_.onUpdate(ctx);

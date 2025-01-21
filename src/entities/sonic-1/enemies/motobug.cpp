@@ -17,8 +17,8 @@ void EnMotobug::d_draw(Camera &cam) {
     if (dir == 1)
         flip = true;
     auto &spr = animator_.getCurrentFrame();
-    cam.getScr().artist().drawSprite(spr, {.x = dv_pos.x - cam.getPos().x,
-                                           .y = dv_pos.y - cam.getPos().y}, {.flipHorizontal=flip});///
+    artist_.drawSprite(spr, {.x = dv_pos.x - cam.getPos().x,
+                             .y = dv_pos.y - cam.getPos().y}, {.flipHorizontal=flip});///
     m_sensor.draw(cam);
 }
 

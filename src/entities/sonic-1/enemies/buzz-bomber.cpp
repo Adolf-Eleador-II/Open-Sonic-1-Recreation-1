@@ -72,10 +72,10 @@ void EnBuzz::d_reactingToOthers(std::list<Entity *> &entities) {
     if (fired && idleTimer == 24) {
         if (!faceRight)
             entities.push_back(
-                new Bullet(v2f(dv_pos.x - 17, dv_pos.y + 23), animationBullet_, 0, -1));
+                new Bullet(v2f(dv_pos.x - 17, dv_pos.y + 23), artist_, animationBullet_, 0, -1));
         else
             entities.push_back(
-                new Bullet(v2f(dv_pos.x + 17, dv_pos.y + 23), animationBullet_, 0, 1));
+                new Bullet(v2f(dv_pos.x + 17, dv_pos.y + 23), artist_, animationBullet_, 0, 1));
     }
 }
 
@@ -102,16 +102,16 @@ void EnBuzz::d_draw(Camera &cam) {
     auto &sprTurbo = animatorTurbo_.getCurrentFrame();
     
     auto &sprFire = animatorFire_.getCurrentFrame();
-    cam.getScr().artist().drawSprite(spr, {.x = bPos.x - cam.getPos().x,
-                                           .y = bPos.y - cam.getPos().y}, {.flipHorizontal=faceRight});
-    cam.getScr().artist().drawSprite(sprWings, {.x = wPos.x - cam.getPos().x,
-                                                .y = wPos.y - cam.getPos().y}, {.flipHorizontal=faceRight});
+    artist_.drawSprite(spr, {.x = bPos.x - cam.getPos().x,
+                             .y = bPos.y - cam.getPos().y}, {.flipHorizontal=faceRight});
+    artist_.drawSprite(sprWings, {.x = wPos.x - cam.getPos().x,
+                                  .y = wPos.y - cam.getPos().y}, {.flipHorizontal=faceRight});
     if(xsp!=0)
-        cam.getScr().artist().drawSprite(sprTurbo, {.x = tPos.x - cam.getPos().x,
-                                                    .y = tPos.y - cam.getPos().y}, {.flipHorizontal=faceRight});
+        artist_.drawSprite(sprTurbo, {.x = tPos.x - cam.getPos().x,
+                                      .y = tPos.y - cam.getPos().y}, {.flipHorizontal=faceRight});
     if(42>idleTimer && idleTimer>24){
-        cam.getScr().artist().drawSprite(sprFire, {.x = fPos.x - cam.getPos().x,
-                                                .y = fPos.y - cam.getPos().y}, {.flipHorizontal=faceRight});
+        artist_.drawSprite(sprFire, {.x = fPos.x - cam.getPos().x,
+                                  .y = fPos.y - cam.getPos().y}, {.flipHorizontal=faceRight});
     }
 }
 

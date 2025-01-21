@@ -14,8 +14,8 @@
 class TitleCardSonic1 : public Entity {
 public:
     TitleCardSonic1(const std::string &zonename, int act, float screenWidth,
-                    EntityPool &entityPool, ResourceStore &store)
-        : m_act(act), m_zonename(zonename), m_entityPool(entityPool), store_(store) {
+                    EntityPool &entityPool, ResourceStore &store, artist_api::Artist &artist)
+        : m_act(act), m_zonename(zonename), m_entityPool(entityPool), store_(store), artist_(artist) {
         m_textActX = screenWidth;
         m_shapeX = screenWidth;
         m_textTopX = 0;
@@ -65,10 +65,10 @@ public:
             store_.map<SonicResources>().animations.act.ellipse
         ).frames[0];
 
-        scr.artist().drawSprite(
+        artist_.drawSprite(
             sprActBack,
             artist_api::Vector2D<float>{.x = m_shapeX, .y = 69});
-        scr.artist().drawSprite(
+        artist_.drawSprite(
             sprAct,
             artist_api::Vector2D<float>{.x = m_textActX, .y = 110});
 
@@ -91,7 +91,7 @@ public:
 
         auto& sprActDigit = store_.get<artist_api::Animation>(actDigitResource).frames[0];
 
-        scr.artist().drawSprite(
+        artist_.drawSprite(
             sprActDigit,
             artist_api::Vector2D<float>{.x = _v2f.x, .y = _v2f.y});
 
@@ -99,10 +99,10 @@ public:
         auto &font = store_.get<artist_api::SpriteFont>(
             store_.map<SonicResources>().fonts.s1TitleCard);
 
-        scr.artist().drawText(
+        artist_.drawText(
             m_zonename, {.x = m_textTopX, .y = 72}, font,
             {.horizontalAlign = artist_api::HorizontalAlign::RIGHT});
-        scr.artist().drawText(
+        artist_.drawText(
             "ZONE", {.x = m_textBottomX, .y = 92}, font,
             {.horizontalAlign = artist_api::HorizontalAlign::RIGHT});
 
@@ -112,6 +112,7 @@ public:
     }
 
 private:
+    artist_api::Artist &artist_;
     ResourceStore &store_;
     EntityPool &m_entityPool;
     const std::string &m_zonename;

@@ -45,7 +45,8 @@ public:
         v2f playerStartPosition,
         terrain::Store<terrain::Tile>& storeTile,
         std::unique_ptr<artist_api::Texture> texBlocks,
-        ResourceStore &store
+        ResourceStore &store,
+        artist_api::Artist &artist
     ) 
         : m_terrain(terrain)
         , cam(scr)
@@ -58,11 +59,12 @@ public:
         , m_zoneNameShort(zoneNameShort)
         , m_act(act)
         , m_playerStartPosition(playerStartPosition)
-        , m_terrainDrawer(cam, m_terrain.getChunkStore(), m_terrain.getLayout(), 255, storeTile, std::move(texBlocks))
+        , m_terrainDrawer(cam, m_terrain.getChunkStore(), m_terrain.getLayout(), 255, storeTile, std::move(texBlocks), artist)
         , bg(m_terrainDrawer)
         , store_(store)
+        , artist_(artist)
     {
-        EntityCreatorSonic1 ec(m_entityPool, m_terrain, store);
+        EntityCreatorSonic1 ec(m_entityPool, m_terrain, store, artist);
         
         for (auto& plc : entities) {
             m_entityPool.create(ec.create(plc));
@@ -81,6 +83,7 @@ public:
     terrain::TerrainDrawer& getTerrainDrawer() { return m_terrainDrawer; } 
 
 private:
+    artist_api::Artist &artist_;
     ResourceStore &store_;
     terrain::Terrain &m_terrain;
 

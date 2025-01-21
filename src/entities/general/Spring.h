@@ -15,8 +15,8 @@ class Spring : public Entity
 {
     public:
 		enum Rotation {R_UP, R_RIGHT, R_DOWN, R_LEFT};
-		Spring(v2f _pos, SpringAnimations anims, bool _red = false, Rotation rotation = R_UP) : 
-			Entity(_pos), animator_(anims.anim), anims_(anims), red(_red), rot(rotation) {};
+		Spring(v2f _pos, artist_api::Artist &artist, SpringAnimations anims, bool _red = false, Rotation rotation = R_UP) : 
+			Entity(_pos), animator_(anims.anim), anims_(anims), red(_red), rot(rotation), artist_(artist) {};
         void init();
 		void d_update();
 		void d_draw(Camera& cam);
@@ -25,6 +25,7 @@ class Spring : public Entity
 		Rotation getRotation() { return rot; }
 		EntityTypeID type() override { return EntityTypeID::SPRING; }
 	private:
+		artist_api::Artist &artist_;
 		artist_api::Animator animator_;
 		SpringAnimations anims_;
 		int animTimer = SPRING_ANIM_TIMER;

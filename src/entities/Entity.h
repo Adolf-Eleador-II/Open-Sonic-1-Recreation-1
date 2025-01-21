@@ -35,8 +35,8 @@ enum Types {
 
 class EntityHitBox {
 public:
-    EntityHitBox(v2f &position, v2i radius)
-        : m_radius(radius), m_position(position) {}
+    EntityHitBox(v2f &position, v2i radius, artist_api::Artist &artist)
+        : m_radius(radius), m_position(position), artist_(artist) {}
 
     v2f getPosition() const { return m_position; }
     v2i getRadius() const { return m_radius; }
@@ -52,7 +52,7 @@ public:
     }
 
     void draw(Camera &cam) {
-        cam.getScr().artist().drawRectangleRadius(
+        artist_.drawRectangleRadius(
             {.x = static_cast<float>(m_radius.x),
              .y = static_cast<float>(m_radius.y)},
             {.x = m_position.x - cam.getPos().x,
@@ -63,6 +63,7 @@ public:
     }
 
 private:
+    artist_api::Artist &artist_;
     v2f &m_position;
     v2i m_radius;
 };

@@ -34,10 +34,11 @@ struct SensorResult {
 //https://info.sonicretro.org/SPG:Solid_Tiles#Sensors
 class Sensor {
 public:
-    Sensor(v2f position, SensorDirection direction, Terrain& terrain)
+    Sensor(v2f position, SensorDirection direction, Terrain& terrain, artist_api::Artist &artist)
         : m_terrain(terrain) 
         , m_position(position)
         , m_direction(direction)
+        , artist_(artist)
     {}
 
     void         setLayer(TerrainLayer layer) { m_layer = layer; }
@@ -95,7 +96,8 @@ public:
         }
     }
 
-private: 
+private:
+    artist_api::Artist &artist_;
     SensorDirection m_direction;
     v2f        m_position;
     Terrain&        m_terrain;
@@ -202,9 +204,7 @@ private:
     }
 
     void drawDot(float x, float y, artist_api::Color color, Camera& cam) {
-        auto& art = cam.getScr().artist();
-        
-        art.drawRectangleRadius({.x = 0.5f, .y = 0.5f}, {
+        artist_.drawRectangleRadius({.x = 0.5f, .y = 0.5f}, {
             .x = x, .y = y
         }, {
             .fillColor = color,

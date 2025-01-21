@@ -9,11 +9,11 @@
 
 class PlayerCollider {
 public:
-    PlayerCollider(v2f& playerPosition, v2f& playerSpeed, float& playerGsp, terrain::Terrain& terrain) 
+    PlayerCollider(v2f& playerPosition, v2f& playerSpeed, float& playerGsp, terrain::Terrain& terrain, artist_api::Artist &artist) 
         : m_playerPosition(playerPosition)
         , m_playerSpeed(playerSpeed)
         , m_playerGroundSpeed(playerGsp)
-        , m_sensor(playerPosition, v2i(9, 20), v2i(10, 0), terrain)
+        , m_sensor(playerPosition, v2i(9, 20), v2i(10, 0), terrain, artist)
     {}
 
     void update() {
@@ -119,7 +119,7 @@ private:
         m_sensor.setSensorState(PlayerSensorTag::PUSH_LEFT,  (m_playerGroundSpeed < 0) && inActivePushAngleRange);
         m_sensor.setSensorState(PlayerSensorTag::PUSH_RIGHT, (m_playerGroundSpeed > 0) && inActivePushAngleRange);
 
-        // TODO In S3K Push Sensors will also appear when the Player's Ground Angle is a multiple of 90° (64) in addition to the normal angle ranges.
+        // TODO In S3K Push Sensors will also appear when the Player's Ground Angle is a multiple of 90ï¿½ (64) in addition to the normal angle ranges.
 
         m_sensor.setSensorState(PlayerSensorTag::CELLING_LEFT, false);
         m_sensor.setSensorState(PlayerSensorTag::CELLING_RIGHT, false);

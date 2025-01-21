@@ -32,6 +32,6 @@ void Bullet::d_draw(Camera &cam) {
         flip = true;
 
     auto &spr = animator_.getCurrentFrame();
-    cam.getScr().artist().drawSprite(spr, {.x = dv_pos.x - cam.getPos().x,
-                                           .y = dv_pos.y - cam.getPos().y}, {.flipHorizontal=flip});
+    artist_.drawSprite(spr, {.x = dv_pos.x - cam.getPos().x,
+                             .y = dv_pos.y - cam.getPos().y}, {.flipHorizontal=flip});
 }

@@ -1,5 +1,7 @@
 #include "Player.h"
 #include "core/Geometry.h"
+#include "core/game_enviroment/ResourceStore.h"
+#include "core/game_enviroment/artist/ArtistStructs.h"
 #include "core/game_enviroment/artist/SpriteFont.h"
 #include "entities/Entity.h"
 #include "entities/Player.h"
@@ -87,7 +89,7 @@ void Player::d_draw(Camera &cam) {
         m_stateMachine.currentId() == PlayerStateID::HURT){
             // cam.draw(dv_anim, dv_pos, anim8Angle, animFlip, false);
             auto &spr = animator_.getCurrentFrame();
-            cam.getScr().artist().drawSprite(spr, {.x = dv_pos.x - cam.getPos().x,
+            artist_.drawSprite(spr, {.x = dv_pos.x - cam.getPos().x,
                                                    .y = dv_pos.y - cam.getPos().y}, {.angle = anim8Angle, .flipHorizontal = animFlip});
         }
 
@@ -109,7 +111,7 @@ void Player::d_draw(Camera &cam) {
     auto fontResourceId = store_.map<SonicResources>().fonts.general;
     auto &font = store_.get<artist_api::SpriteFont>(fontResourceId);
     
-    scr.artist().drawText(dbInfo, {.x = 427 - 256.f, .y = 8},
+    artist_.drawText(dbInfo, {.x = 427 - 256.f, .y = 8},
                           font);
 
     m_collider.draw(cam);
@@ -316,27 +318,27 @@ void Player::entitiesCollision(std::list<Entity *> &entities, Camera &cam) {
                     en->d_destroy();
 
                     
-                    auto& animExplosion = en->getAnimationExplosion();
-                    entities.push_back(new SingleAnimationEffect(v2f(en->d_getPos().x, en->d_getPos().y), animExplosion, m_entityPool));
+                    auto& animExplosion = store_.get<artist_api::Animation>(store_.map<SonicResources>().animations.sfx.explosion);
+                    entities.push_back(new SingleAnimationEffect(v2f(en->d_getPos().x, en->d_getPos().y), artist_, animExplosion, m_entityPool));
 
 
                     enemyCombo++;
                     switch (enemyCombo) {
                     case 1:
                         score += 100;
-                        entities.push_back(new EnemyScore(en->d_getPos(), anims_.n100, (EnemyScore::Points)(enemyCombo - 1)));
+                        entities.push_back(new EnemyScore(en->d_getPos(), artist_, anims_.n100, (EnemyScore::Points)(enemyCombo - 1)));
                         break;
                     case 2:
                         score += 200;
-                        entities.push_back(new EnemyScore(en->d_getPos(), anims_.n200, (EnemyScore::Points)(enemyCombo - 1)));
+                        entities.push_back(new EnemyScore(en->d_getPos(), artist_, anims_.n200, (EnemyScore::Points)(enemyCombo - 1)));
                         break;
                     case 3:
                         score += 500;
-                        entities.push_back(new EnemyScore(en->d_getPos(), anims_.n500, (EnemyScore::Points)(enemyCombo - 1)));
+                        entities.push_back(new EnemyScore(en->d_getPos(), artist_, anims_.n500, (EnemyScore::Points)(enemyCombo - 1)));
                         break;
                     default:
                         score += 1000;
-                        entities.push_back(new EnemyScore(en->d_getPos(), anims_.n1_000, (EnemyScore::Points)(enemyCombo - 1)));
+                        entities.push_back(new EnemyScore(en->d_getPos(), artist_, anims_.n1_000, (EnemyScore::Points)(enemyCombo - 1)));
                         break;
                     }
 
@@ -375,13 +377,13 @@ void Player::entitiesCollision(std::list<Entity *> &entities, Camera &cam) {
                         break;
                 }
 
-                entities.push_back(new BrokenMonitor(m->d_getPos(),m->getAnimationBroken()));
+                entities.push_back(new BrokenMonitor(m->d_getPos(), artist_, m->getAnimationBroken()));
 
-                auto& animExplosion = m->getAnimationExplosion();
-                entities.push_back(new SingleAnimationEffect(m->d_getPos(), animExplosion, m_entityPool));
+                auto& animExplosion = store_.get<artist_api::Animation>(store_.map<SonicResources>().animations.sfx.explosion);
+                entities.push_back(new SingleAnimationEffect(m->d_getPos(), artist_, animExplosion, m_entityPool));
 
                 entities.push_back(
-                    new MonitorIcon(m->d_getPos(),m->getAnimationIcon(), m->getItem()));
+                    new MonitorIcon(m->d_getPos(), artist_, m->getAnimationIcon(), m->getItem()));
 
                 m->d_destroy();
 

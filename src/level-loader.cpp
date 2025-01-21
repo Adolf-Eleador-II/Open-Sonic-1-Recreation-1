@@ -32,7 +32,7 @@ Level* LevelLoader::loadFromSonic1(ZoneSonic1 zone, int act) {
         m_screen, m_input, m_audio, 
         sZone, sZoneShort, act, 
         m_playerStartPosition, *m_storeTiles.get(),
-        std::move(tex), store_);
+        std::move(tex), store_, artist_);
 }
 
 
@@ -83,7 +83,7 @@ Level* LevelLoader::loadFromSonic3K(ZoneSonic3K zone, int act) {
         m_screen, m_input, m_audio, 
         sZone, sZoneShort, act, 
         m_playerStartPosition, *m_storeTiles.get(),
-        std::move(tex), store_);
+        std::move(tex), store_, artist_);
 }
 
 void LevelLoader::reset() {

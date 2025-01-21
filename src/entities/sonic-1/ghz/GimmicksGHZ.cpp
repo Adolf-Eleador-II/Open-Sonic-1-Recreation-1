@@ -10,12 +10,12 @@ void GimGHZ_Stone::init()
     dv_platform = true;
 }
 
-GimGHZ_BridgeController::GimGHZ_BridgeController(v2f _pos, artist_api::Sprite &spr, uint8_t count, std::list<Entity*>& ent) : Entity(_pos), spr_(spr)
+GimGHZ_BridgeController::GimGHZ_BridgeController(v2f _pos, artist_api::Artist &artist, artist_api::Sprite &spr, uint8_t count, std::list<Entity*>& ent) : Entity(_pos), spr_(spr), artist_(artist)
 {
     segmentsCount = count;
     segments = new GimGHZ_Bridge*[count];
 	for(int i = -count / 2; i < count / 2; i++) {
-        GimGHZ_Bridge* segment = new GimGHZ_Bridge(v2f(_pos.x + i * 16, _pos.y),spr_);
+        GimGHZ_Bridge* segment = new GimGHZ_Bridge(v2f(_pos.x + i * 16, _pos.y),artist,spr_);
         
         if (i < 0)
             segment->maxDepression = ((count / 2) + i + 1) * 2;
@@ -107,7 +107,7 @@ void GimGHZ_SlpPlatform::d_update() {
                     v2f offset = v2f((i%6)*16, (i/6)*16);
                     artist_api::Sprite part_spr = spr_;
                     part_spr.rect = {48+offset.x,  offset.y,  16, 16};
-                    ent.push_front(new GimGHZ_SlpPlatformPart(v2f(_p.x+offset.x, _p.y+offset.y),part_spr, i, false));
+                    ent.push_front(new GimGHZ_SlpPlatformPart(v2f(_p.x+offset.x, _p.y+offset.y), artist_, part_spr, i, false));
                 }
 
             } else {
@@ -116,7 +116,7 @@ void GimGHZ_SlpPlatform::d_update() {
                     v2f offset = v2f((i%6)*16, (i/6)*16);
                     artist_api::Sprite part_spr = spr_;
                     part_spr.rect = {48+offset.x,  offset.y,  16, 16};
-                    ent.push_front(new GimGHZ_SlpPlatformPart(v2f(_p.x-offset.x, _p.y+offset.y),part_spr, i, true));
+                    ent.push_front(new GimGHZ_SlpPlatformPart(v2f(_p.x-offset.x, _p.y+offset.y), artist_, part_spr, i, true));
                 }
             }
         }

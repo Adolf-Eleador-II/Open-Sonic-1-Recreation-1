@@ -12,7 +12,8 @@ class GameScene : public Scene {
 public:
     explicit GameScene(GameEnvironment &env,
                        DeprecatedGameEnvironment &deprEnv,
-                       ResourceStore &store);
+                       ResourceStore &store,
+                       artist_api::Artist &artist);
 
 public:
     void onStart(const SceneStartContext &ctx) override {
@@ -50,6 +51,7 @@ private:
     GameEnvironment &env_;
     DeprecatedGameEnvironment &deprEnv_;
     LevelLoader levelLoader_;
+    artist_api::Artist &artist_;
 };
 
 #endif // OS1R_GAMESCENE_H

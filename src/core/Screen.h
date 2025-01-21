@@ -15,14 +15,9 @@
 
 class Screen {
 public:
-    explicit Screen(SfmlArtist &artist, ResourceStore &store,
-                    resource_store::TextureLoader &loader)
-        : artist_(artist), loader_(loader) {}
-
-    artist_api::Artist &artist() { return artist_; }
+    explicit Screen(resource_store::TextureLoader &loader)
+        : loader_(loader) {}
     resource_store::TextureLoader &textureLoader() { return loader_; }
-
 private:
-    SfmlArtist &artist_;
     resource_store::TextureLoader &loader_;
 };

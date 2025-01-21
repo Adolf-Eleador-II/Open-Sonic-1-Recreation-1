@@ -50,6 +50,7 @@ private:
     entity_v3::EntityPoolEventLoop entityPoolEventLoop_;
     SceneDirector sceneDirector_;
     ResourceStore store_;
+    artist_api::Artist &artist_;
 
 private:
     // clang-format off

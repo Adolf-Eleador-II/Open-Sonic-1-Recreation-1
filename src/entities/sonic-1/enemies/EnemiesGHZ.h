@@ -14,8 +14,8 @@
 
 class EnMotobug : public Enemy {
 public:
-    EnMotobug(v2f pos, artist_api::Animation &anim, artist_api::Animation &animExplosion, terrain::Terrain &terrain)
-        : Enemy(pos, animExplosion), animator_(anim), m_sensor(pos, terrain::SensorDirection::DOWN, terrain) {}
+    EnMotobug(v2f pos, artist_api::Artist &artist, artist_api::Animation &anim, artist_api::Animation &animExplosion, terrain::Terrain &terrain)
+        : Enemy(pos), artist_(artist), animExplosion_(animExplosion), animator_(anim), m_sensor(pos, terrain::SensorDirection::DOWN, terrain, artist) {}
     void init();
     void d_update();
     void draw(Camera &cam) override {
@@ -27,6 +27,8 @@ public:
     EntityTypeID type() override { return EntityTypeID::DEPRECATED; }
 
 private:
+    artist_api::Artist &artist_;
+    artist_api::Animation &animExplosion_;
     artist_api::Animator animator_;
     terrain::Sensor m_sensor;
 
@@ -36,13 +38,13 @@ private:
 
 class EnChopper : public Enemy {
 public:
-    EnChopper(v2f _pos, artist_api::Animation &anim, artist_api::Animation &animExplosion)
-        : Enemy(_pos, animExplosion), animator_(anim) {}
+    EnChopper(v2f _pos, artist_api::Artist &artist, artist_api::Animation &anim, artist_api::Animation &animExplosion)
+        : Enemy(_pos), artist_(artist), animExplosion_(animExplosion), animator_(anim) {}
     void init();
     void d_update();
     void draw(Camera &cam) override {
         auto &spr = animator_.getCurrentFrame();
-        cam.getScr().artist().drawSprite(spr, {.x = dv_pos.x - cam.getPos().x,
+        artist_.drawSprite(spr, {.x = dv_pos.x - cam.getPos().x,
                                                .y = dv_pos.y - cam.getPos().y});
     }
     void d_draw(Camera &cam) override {}
@@ -50,27 +52,31 @@ public:
     EntityTypeID type() override { return EntityTypeID::DEPRECATED; }
 
 private:
+    artist_api::Artist &artist_;
+    artist_api::Animation &animExplosion_;
     artist_api::Animator animator_;
     float ysp = 0;
 };
 
 class EnCrab : public Enemy {
 public:
-    EnCrab(v2f pos, artist_api::Animation &anim, artist_api::Animation &animExplosion, artist_api::Animation &animBullet, std::list<Entity *> &_entities, terrain::Terrain &terrain)
-        : Enemy(pos, animExplosion), animator_(anim), m_sensor(pos, terrain::SensorDirection::DOWN, terrain), animationBullet_(animBullet) {
+    EnCrab(v2f pos, artist_api::Artist &artist, artist_api::Animation &anim, artist_api::Animation &animExplosion, artist_api::Animation &animBullet, std::list<Entity *> &_entities, terrain::Terrain &terrain)
+        : Enemy(pos), artist_(artist), animExplosion_(animExplosion), animator_(anim), m_sensor(pos, terrain::SensorDirection::DOWN, terrain, artist), animationBullet_(animBullet) {
         entities = &_entities;
     }
     void init();
     void d_update();
     void draw(Camera &cam) override {
         auto &spr = animator_.getCurrentFrame();
-        cam.getScr().artist().drawSprite(spr, {.x = dv_pos.x - cam.getPos().x,
+        artist_.drawSprite(spr, {.x = dv_pos.x - cam.getPos().x,
                                                .y = dv_pos.y - cam.getPos().y});
     }
     void d_draw(Camera &cam) override {}
     EntityTypeID type() override { return EntityTypeID::DEPRECATED; }
 
 private:
+    artist_api::Artist &artist_;
+    artist_api::Animation &animExplosion_;
     artist_api::Animator animator_;
     artist_api::Animation &animationBullet_;
 
@@ -94,8 +100,8 @@ struct EnBuzzAnimations {
 
 class EnBuzz : public Enemy {
 public:
-    EnBuzz(v2f _pos, EnBuzzAnimations &anims, artist_api::Animation &animExplosion, artist_api::Animation &animBullet)
-        : Enemy(_pos, animExplosion), animator_(anims.animBody), animatorWings_(anims.animWings), animatorTurbo_(anims.animTurbo), animatorFire_(anims.animFire), animationBullet_(animBullet) {}
+    EnBuzz(v2f _pos, artist_api::Artist &artist, EnBuzzAnimations &anims, artist_api::Animation &animExplosion, artist_api::Animation &animBullet)
+        : Enemy(_pos), artist_(artist), animator_(anims.animBody), animatorWings_(anims.animWings), animatorTurbo_(anims.animTurbo), animatorFire_(anims.animFire), animationBullet_(animBullet) {}
     void init();
     void d_update();
     void draw(Camera &cam) override {
@@ -108,6 +114,7 @@ public:
     EntityTypeID type() override { return EntityTypeID::DEPRECATED; }
 
 private:
+    artist_api::Artist &artist_;
     artist_api::Animator animator_;
     artist_api::Animator animatorWings_;
     artist_api::Animator animatorTurbo_;
@@ -124,7 +131,7 @@ private:
 
 class Bullet : public Entity {
 public:
-    Bullet(v2f _pos, artist_api::Animation &anim, uint8_t _mode, int _dir = -1) : Entity(_pos), animator_(anim) {
+    Bullet(v2f _pos, artist_api::Artist &artist, artist_api::Animation &anim, uint8_t _mode, int _dir = -1) : Entity(_pos), artist_(artist), animator_(anim) {
         mode = _mode;
         dir = _dir;
         init();
@@ -135,6 +142,7 @@ public:
     EntityTypeID type() override { return EntityTypeID::DEPRECATED; }
 
 private:
+    artist_api::Artist &artist_;
     artist_api::Animator animator_;
     
     float ysp = 0;

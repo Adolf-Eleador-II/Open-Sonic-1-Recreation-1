@@ -36,7 +36,7 @@ void Spring::d_draw(Camera& cam) {
 		case R_DOWN: angle = 180; break;
 		case R_LEFT: angle = 270; break;
 	}
-	cam.getScr().artist().drawSprite(spr, {.x = dv_pos.x - cam.getPos().x,
-										   .y = dv_pos.y - cam.getPos().y}, {.angle = angle});
+	artist_.drawSprite(spr, {.x = dv_pos.x - cam.getPos().x,
+							 .y = dv_pos.y - cam.getPos().y}, {.angle = angle});
 }
 

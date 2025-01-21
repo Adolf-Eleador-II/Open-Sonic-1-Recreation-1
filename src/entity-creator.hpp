@@ -13,10 +13,11 @@ public:
 
 class EntityCreatorSonic1 : public IEntityCreator {
 public:
-    EntityCreatorSonic1(EntityPool& entityPool, terrain::Terrain& terrain, ResourceStore& store) 
+    EntityCreatorSonic1(EntityPool& entityPool, terrain::Terrain& terrain, ResourceStore& store, artist_api::Artist &artist) 
         : m_entityList(entityPool)
         , m_terrain(terrain)
         , store_(store)
+        , artist_(artist)
     {} 
 
     Entity* create(EntityPlacement entPlacement);
@@ -25,6 +26,7 @@ private:
     EntityPool& m_entityList;
     terrain::Terrain& m_terrain;
 
+    artist_api::Artist &artist_;
     ResourceStore& store_;
 
     Entity* createEnemies(EntityPlacement eplc);

@@ -18,12 +18,14 @@ public:
         Screen& screen,
         IInputMgr& input,
         Audio& audio,
-        ResourceStore &store
+        ResourceStore &store,
+        artist_api::Artist &artist
     ) 
         : m_screen(screen) 
         , m_audio(audio)
         , m_input(input)
         , store_(store)
+        , artist_(artist)
     {}
 
     Level* loadFromSonic1(ZoneSonic1 zone, int act);
@@ -45,6 +47,7 @@ private:
 
     std::vector<EntityPlacement> m_entityPlacementList;
 private:
+    artist_api::Artist &artist_;
     ResourceStore &store_;
     void reset();
 

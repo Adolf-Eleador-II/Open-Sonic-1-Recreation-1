@@ -82,12 +82,12 @@ struct PlayerAnimations {
 
 class Player : public Entity {
 public:
-    Player(v2f _pos, PlayerAnimations &anims, std::list<Entity *> &entities, EntityPool &entityPool,
+    Player(v2f _pos, artist_api::Artist &artist, PlayerAnimations &anims, std::list<Entity *> &entities, EntityPool &entityPool,
            Camera &cam, terrain::Terrain &_trn, IInputMgr &input, Audio &audio,
            int &rings, int &score, ResourceStore &store)
         : Entity(_pos), anims_(anims), animator_(anims.die), m_entityPool(entityPool), input(input), audio(audio),
-          rings(rings), score(score), m_collider(dv_pos, spd, gsp, _trn),
-          m_stateMachine(m_props), cam(cam), entities(entities), store_(store),
+          rings(rings), score(score), m_collider(dv_pos, spd, gsp, _trn, artist),
+          m_stateMachine(m_props), cam(cam), entities(entities), store_(store), artist_(artist),
 
           sndSpring_(audio.store().get<dj::Sound>(
               audio.store().map<SonicResources>().sounds.spring)),
@@ -133,10 +133,11 @@ private:
     dj::Sound &sndJump_;
 
 private:
+    artist_api::Artist &artist_;
     PlayerAnimations anims_;
     artist_api::Animator animator_;
     ResourceStore &store_;
-    EntityHitBox m_hitbox = EntityHitBox(dv_pos, v2i(8, 16));
+    EntityHitBox m_hitbox = EntityHitBox(dv_pos, v2i(8, 16), artist_);
 
     void moveCam(Camera &cam);
     void terrainCollision(Camera &cam);

@@ -29,19 +29,19 @@ enum class PlayerSensorMode {
 
 class PlayerSensor {
 public:
-    PlayerSensor(v2f position, v2i radius, v2i pushRadius, terrain::Terrain& terrain)
+    PlayerSensor(v2f position, v2i radius, v2i pushRadius, terrain::Terrain& terrain, artist_api::Artist &artist)
         : m_position(position)
         , m_radius(radius)
         , m_radiusPush(pushRadius)
         , m_sensors {
-            Sensor { terrain::Sensor(v2f(position.x - radius.x, position.y + radius.y), terrain::SensorDirection::DOWN, terrain), true },
-            Sensor { terrain::Sensor(v2f(position.x + radius.x, position.y + radius.y), terrain::SensorDirection::DOWN, terrain), true },
+            Sensor { terrain::Sensor(v2f(position.x - radius.x, position.y + radius.y), terrain::SensorDirection::DOWN, terrain, artist), true },
+            Sensor { terrain::Sensor(v2f(position.x + radius.x, position.y + radius.y), terrain::SensorDirection::DOWN, terrain, artist), true },
 
-            Sensor { terrain::Sensor(v2f(position.x - radius.x, position.y - radius.y), terrain::SensorDirection::UP, terrain), true },
-            Sensor { terrain::Sensor(v2f(position.x + radius.x, position.y - radius.y), terrain::SensorDirection::UP, terrain), true },
+            Sensor { terrain::Sensor(v2f(position.x - radius.x, position.y - radius.y), terrain::SensorDirection::UP, terrain, artist), true },
+            Sensor { terrain::Sensor(v2f(position.x + radius.x, position.y - radius.y), terrain::SensorDirection::UP, terrain, artist), true },
 
-            Sensor { terrain::Sensor(v2f(position.x - pushRadius.x, position.y + pushRadius.y), terrain::SensorDirection::LEFT,  terrain), true },
-            Sensor { terrain::Sensor(v2f(position.x + pushRadius.x, position.y + pushRadius.y), terrain::SensorDirection::RIGHT, terrain), true },
+            Sensor { terrain::Sensor(v2f(position.x - pushRadius.x, position.y + pushRadius.y), terrain::SensorDirection::LEFT,  terrain, artist), true },
+            Sensor { terrain::Sensor(v2f(position.x + pushRadius.x, position.y + pushRadius.y), terrain::SensorDirection::RIGHT, terrain, artist), true },
         }
     {}
 

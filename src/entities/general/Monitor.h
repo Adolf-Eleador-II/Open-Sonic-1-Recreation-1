@@ -9,15 +9,14 @@ struct MonitorAnimations {
   artist_api::Animation &animBroken;
   artist_api::Animation &animNoise;
   artist_api::Animation &animIcon;
-  artist_api::Animation &animExplosion;
 };
 
 class Monitor : public Entity {
   public:
     enum Item { M_RINGS, M_INVINCIBILITY, M_LIVE, M_SHIELD, M_SPEED };
 
-    Monitor(v2f _pos, MonitorAnimations &anims, Item item) : Entity(_pos), animator_(anims.animMain), animatorScreen_(anims.animIcon),
-                                                  anims_(anims), item(item) {}
+    Monitor(v2f _pos, artist_api::Artist &artist, MonitorAnimations &anims, Item item) : Entity(_pos), animator_(anims.animMain), animatorScreen_(anims.animIcon),
+                                                  anims_(anims), item(item), artist_(artist) {}
     void init() {
         dv_solid = true;
         dv_platform = true;
@@ -41,28 +40,24 @@ class Monitor : public Entity {
 
     void draw(Camera &cam) {
         auto &spr = animator_.getCurrentFrame();
-        cam.getScr().artist().drawSprite(spr, {.x = dv_pos.x - cam.getPos().x,
-                                               .y = dv_pos.y - cam.getPos().y});
+        artist_.drawSprite(spr, {.x = dv_pos.x - cam.getPos().x,
+                   .y = dv_pos.y - cam.getPos().y});
         auto &sprIcon = animatorScreen_.getCurrentFrame();
-        cam.getScr().artist().drawSprite(sprIcon, {.x = dv_pos.x - cam.getPos().x,
-                                                   .y = dv_pos.y - 3 - cam.getPos().y});
+        artist_.drawSprite(sprIcon, {.x = dv_pos.x - cam.getPos().x,
+                       .y = dv_pos.y - 3 - cam.getPos().y});
     }
 
     Item getItem() { return item; }
     artist_api::Animation& getAnimationIcon() { return anims_.animIcon; }
     artist_api::Animation& getAnimationBroken() { return anims_.animBroken; }
-    artist_api::Animation& getAnimationExplosion() { return anims_.animExplosion; }
 
     EntityTypeID type() override { return EntityTypeID::MONITOR; }
 
   private:
+    artist_api::Artist &artist_;
     MonitorAnimations anims_;
     artist_api::Animator animator_;
     artist_api::Animator animatorScreen_;
-    // artist_api::Animation &animIcon_;
-    // artist_api::Animation &animNoise_;
-    // artist_api::Animation &animBroken_;
-    // artist_api::Animation &animExplosion_;
     
     int liveTime=0;
     Item item;
@@ -70,22 +65,23 @@ class Monitor : public Entity {
 
 class BrokenMonitor : public Entity {
   public:
-    BrokenMonitor(v2f _pos, artist_api::Animation &anim) : Entity(_pos), animator_(anim) {
+    BrokenMonitor(v2f _pos, artist_api::Artist &artist, artist_api::Animation &anim) : Entity(_pos), animator_(anim), artist_(artist) {
         animator_.setSpeed(0.f);
     }
     void draw(Camera &cam) {
         auto &spr = animator_.getCurrentFrame();
-        cam.getScr().artist().drawSprite(spr, {.x = dv_pos.x - cam.getPos().x,
-                                               .y = dv_pos.y - cam.getPos().y});
+        artist_.drawSprite(spr, {.x = dv_pos.x - cam.getPos().x,
+                                 .y = dv_pos.y - cam.getPos().y});
     }
     EntityTypeID type() override { return EntityTypeID::DEPRECATED; }
   private:
+    artist_api::Artist &artist_;
     artist_api::Animator animator_;
 };
 
 class MonitorIcon : public Entity {
   public:
-    MonitorIcon(v2f _pos, artist_api::Animation &anim, Monitor::Item item) : Entity(_pos), animator_(anim), item(item) {
+    MonitorIcon(v2f _pos, artist_api::Artist &artist, artist_api::Animation &anim, Monitor::Item item) : Entity(_pos), animator_(anim), item(item), artist_(artist) {
         init();
     }
 
@@ -96,8 +92,8 @@ class MonitorIcon : public Entity {
     }
     void draw(Camera &cam) {
         auto &spr = animator_.getCurrentFrame();
-        cam.getScr().artist().drawSprite(spr, {.x = dv_pos.x - cam.getPos().x,
-                                               .y = dv_pos.y - cam.getPos().y});
+        artist_.drawSprite(spr, {.x = dv_pos.x - cam.getPos().x,
+                                 .y = dv_pos.y - cam.getPos().y});
     }
     void d_update() {
         if (tick < 30)
@@ -111,6 +107,7 @@ class MonitorIcon : public Entity {
     EntityTypeID type() override { return EntityTypeID::DEPRECATED; }
 
   private:
+    artist_api::Artist &artist_;
     artist_api::Animator animator_;
     Monitor::Item item;
     int tick;

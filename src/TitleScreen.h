@@ -9,7 +9,7 @@
 
 class TitleScreen {
 public:
-    TitleScreen(Screen &scr) : scr(scr), cam(scr) {
+    TitleScreen(Screen &scr, artist_api::Artist &artist) : scr(scr), cam(scr), artist_(artist) {
 
         bgTexture_ =
             scr.textureLoader().loadFromFile("content/textures/texTitle.png");
@@ -36,11 +36,12 @@ public:
         sprBackRing.setOffsetCenter();
 
 
-        scr.artist().drawSprite(sprBackRing, {.x = pos.x, .y = pos.y});
-        scr.artist().drawSprite(sprFrontRing, {.x = pos.x, .y = pos.y});
+        artist_.drawSprite(sprBackRing, {.x = pos.x, .y = pos.y});
+        artist_.drawSprite(sprFrontRing, {.x = pos.x, .y = pos.y});
     }
 
 private:
+    artist_api::Artist &artist_;
     Screen &scr;
     Camera cam;
 

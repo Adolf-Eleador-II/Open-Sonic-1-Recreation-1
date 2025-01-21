@@ -6,7 +6,8 @@
 #include "entity-pool.hpp"
 
 Ring* Ring::CreateRow(EntityPool& entityPool, terrain::Terrain &_trn, 
-	v2f startPosition, RingAnimations &anims, int count, float direction, float spaceBetween
+	v2f startPosition, artist_api::Artist &artist, RingAnimations &anims, int count,
+    float direction, float spaceBetween
 ){
 	float sina = sin(radians(direction));
 	float cosa = cos(radians(direction));
@@ -14,13 +15,13 @@ Ring* Ring::CreateRow(EntityPool& entityPool, terrain::Terrain &_trn,
     auto ringPos = startPosition;
 
     for (int i = 0; i < count - 1; i++) {
-        entityPool.create(new Ring(ringPos, anims, entityPool, _trn));
+        entityPool.create(new Ring(ringPos, artist, anims, entityPool, _trn));
 
         ringPos.x += (16 + spaceBetween) * cosa;
         ringPos.y += (16 + spaceBetween) * sina;
 	}
 
-    return new Ring(ringPos, anims, entityPool, _trn);
+    return new Ring(ringPos, artist, anims, entityPool, _trn);
 }
 
 void Ring::init() {
@@ -55,8 +56,8 @@ void Ring::update() {
 void Ring::draw(Camera &cam) { 
     // cam.draw(m_anim, m_pos);
     auto &spr = animator_.getCurrentFrame();
-    cam.getScr().artist().drawSprite(spr, {.x = m_pos.x - cam.getPos().x,
-                                        .y = m_pos.y - cam.getPos().y}); 
+    artist_.drawSprite(spr, {.x = m_pos.x - cam.getPos().x,
+                             .y = m_pos.y - cam.getPos().y}); 
 }
 
 void Ring::onHitboxCollision(Entity &entity) {
