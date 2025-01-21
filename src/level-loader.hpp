@@ -15,15 +15,13 @@
 class LevelLoader {
 public:
     LevelLoader(
-        Screen& screen,
         IInputMgr& input,
         Audio& audio,
         ResourceStore &store,
         artist_api::Artist &artist,
         resource_store::TextureLoader &loader
-    ) 
-        : m_screen(screen) 
-        , m_audio(audio)
+    )
+        : m_audio(audio)
         , m_input(input)
         , store_(store)
         , artist_(artist)
@@ -35,7 +33,6 @@ public:
     Level* loadFromSonic3K(ZoneSonic3K zone, int act);
 
 private:
-    Screen&     m_screen;
     IInputMgr&  m_input;
     Audio&      m_audio;
 

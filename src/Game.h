@@ -44,7 +44,6 @@ private:
     GameEnvironment &env_;
 
     Audio deprAudio_;
-    Screen deprScreen_;
     DeprecatedGameEnvironment deprEnv_;
 
     entity_v3::EntityPoolEventLoop entityPoolEventLoop_;
@@ -64,7 +63,6 @@ private:
 
     entity_v3::DrawContext entDrawCtx_ = entity_v3::DrawContext {
         .artist = env_.artist(), 
-        .deprecatedScreen = deprScreen_
     };
 
     entity_v3::Contexts entCtxs_ = entity_v3::Contexts {

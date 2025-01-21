@@ -9,7 +9,7 @@
 
 class TitleScreen {
 public:
-    TitleScreen(Screen &scr, artist_api::Artist &artist, resource_store::TextureLoader &loader) : scr(scr), cam(scr), artist_(artist), loader_(loader) {
+    TitleScreen(artist_api::Artist &artist, resource_store::TextureLoader &loader) : artist_(artist), loader_(loader) {
 
         bgTexture_ =
             loader_.loadFromFile("content/textures/texTitle.png");
@@ -43,7 +43,6 @@ public:
 private:
     artist_api::Artist &artist_;
     resource_store::TextureLoader &loader_;
-    Screen &scr;
     Camera cam;
 
     v2f pos;

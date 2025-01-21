@@ -4,7 +4,7 @@
 
 class Camera {
 public:
-    Camera(Screen &scr) : scr(scr) {}
+    Camera(){};
 
     void create(v2f _pos, Size _levelSize, bool free);
     void update();
@@ -24,10 +24,7 @@ public:
     int getBottomBorder() { return bottomBorder; }
     void setRightBorder(int _value) { rightBorder = _value; }
 
-    Screen &getScr() { return scr; }
-
 private:
-    Screen &scr;
     v2f pos;
     Size size;
     Size levelSize;

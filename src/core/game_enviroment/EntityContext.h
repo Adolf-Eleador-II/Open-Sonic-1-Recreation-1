@@ -13,7 +13,6 @@ class InitContext {};
 
 struct DrawContext final {
     artist_api::Artist &artist;
-    Screen &deprecatedScreen;
 };
 
 struct UpdateContext final {

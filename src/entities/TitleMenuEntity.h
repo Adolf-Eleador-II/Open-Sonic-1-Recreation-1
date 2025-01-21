@@ -145,7 +145,6 @@ public:
     }
 
     void onDraw(const entity_v3::DrawContext &ctx) override {
-        auto &scr = ctx.deprecatedScreen;
         auto scrCenterPos =
             v2f(427 / 2, 240 / 2);
         auto pos = scrCenterPos;

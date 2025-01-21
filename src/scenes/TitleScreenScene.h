@@ -12,7 +12,7 @@
 class TitleScreenScene : public Scene {
 public:
     explicit TitleScreenScene(DeprecatedGameEnvironment &de, ResourceStore &store, artist_api::Artist &artist, resource_store::TextureLoader &loader)
-        : titleScreenDeprecated_(de.scr, artist, loader), deprEnv_(de), store_(store), artist_(artist), loader_(loader) {}
+        : titleScreenDeprecated_(artist, loader), deprEnv_(de), store_(store), artist_(artist), loader_(loader) {}
 
     void onStart(const SceneStartContext &ctx) override {
         ctx.entityPool.instantiate(

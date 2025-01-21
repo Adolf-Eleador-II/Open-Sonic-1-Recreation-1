@@ -25,8 +25,6 @@ public:
     EntityTypeID type() override { return EntityTypeID::LEVEL_INFORMER; }
 
     void draw(Camera &cam) override {
-        auto &scr = cam.getScr();
-
         if (m_tick < 200) {
             if (m_tick > 0) {
                 m_textTopX += 8;

@@ -106,8 +106,6 @@ void Player::d_draw(Camera &cam) {
              m_collider.getAngle().degrees(), m_collider.getMode(),
              m_stateMachine.currentId(), m_collider.isGrounded(), debug);
 
-    Screen &scr = cam.getScr();
-
     auto fontResourceId = store_.map<SonicResources>().fonts.general;
     auto &font = store_.get<artist_api::SpriteFont>(fontResourceId);
     

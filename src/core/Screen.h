@@ -12,9 +12,3 @@
 
 #include "core/game_enviroment/ResourceStore.h"
 #include "sfml_game_environment/SfmlArtist.h"
-
-class Screen {
-public:
-    explicit Screen();
-private:
-};

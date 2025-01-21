@@ -36,7 +36,6 @@ public:
         terrain::Terrain& terrain,
         std::vector<EntityPlacement>& entities,
         GameType gameType,
-        Screen& scr, 
         IInputMgr& input, 
         Audio& audio,
         std::string& zoneName,
@@ -50,9 +49,7 @@ public:
         resource_store::TextureLoader &loader
     ) 
         : m_terrain(terrain)
-        , cam(scr)
         , m_entityPool(cam)
-        , m_screen(scr)
         , m_input(input)
         , m_audio(audio) 
         , m_gameType(gameType)
@@ -94,7 +91,6 @@ private:
     std::string m_zoneNameShort;
     int         m_act;
 
-    Screen&     m_screen;
     IInputMgr&  m_input;
     Audio&      m_audio;
 

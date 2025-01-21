@@ -5,7 +5,6 @@
 #include "Audio.h"
 
 struct DeprecatedGameEnvironment {
-    Screen& scr;
     Audio& audio;
 };
 
