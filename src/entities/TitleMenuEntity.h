@@ -155,8 +155,6 @@ public:
         for (auto &el : elementList_) {
             auto &str = el->displayName();
 
-            // auto &st = ctx.deprecatedScreen.store();
-
             auto &font = store_.get<artist_api::SpriteFont>(
                 store_.map<SonicResources>().fonts.general);
 

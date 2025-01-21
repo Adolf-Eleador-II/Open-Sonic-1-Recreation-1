@@ -25,14 +25,14 @@ Level* LevelLoader::loadFromSonic1(ZoneSonic1 zone, int act) {
 
     auto sTex       = "content/levels/textures/" + sZoneShort    + ".png";
 
-    auto tex = m_screen.textureLoader().loadFromFile(sTex);
+    auto tex = loader_.loadFromFile(sTex);
 
     return new Level(
         *m_terrain, m_entityPlacementList, GameType::SONIC_1, 
         m_screen, m_input, m_audio, 
         sZone, sZoneShort, act, 
         m_playerStartPosition, *m_storeTiles.get(),
-        std::move(tex), store_, artist_);
+        std::move(tex), store_, artist_, loader_);
 }
 
 
@@ -76,14 +76,14 @@ Level* LevelLoader::loadFromSonic3K(ZoneSonic3K zone, int act) {
 
     m_terrain = new terrain::Terrain(*m_layout.get());
 
-    auto tex = m_screen.textureLoader().loadFromFile("content/levels/sonic3/ICZ/texture.png");
+    auto tex = loader_.loadFromFile("content/levels/sonic3/ICZ/texture.png");
 
     return new Level(
         *m_terrain, m_entityPlacementList, GameType::SONIC_3K, 
         m_screen, m_input, m_audio, 
         sZone, sZoneShort, act, 
         m_playerStartPosition, *m_storeTiles.get(),
-        std::move(tex), store_, artist_);
+        std::move(tex), store_, artist_, loader_);
 }
 
 void LevelLoader::reset() {

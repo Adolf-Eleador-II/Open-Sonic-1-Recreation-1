@@ -15,9 +15,6 @@
 
 class Screen {
 public:
-    explicit Screen(resource_store::TextureLoader &loader)
-        : loader_(loader) {}
-    resource_store::TextureLoader &textureLoader() { return loader_; }
+    explicit Screen();
 private:
-    resource_store::TextureLoader &loader_;
 };

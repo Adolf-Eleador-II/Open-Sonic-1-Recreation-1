@@ -11,14 +11,14 @@
 
 class TitleScreenScene : public Scene {
 public:
-    explicit TitleScreenScene(DeprecatedGameEnvironment &de, ResourceStore &store, artist_api::Artist &artist)
-        : titleScreenDeprecated_(de.scr, artist), deprEnv_(de), store_(store), artist_(artist) {}
+    explicit TitleScreenScene(DeprecatedGameEnvironment &de, ResourceStore &store, artist_api::Artist &artist, resource_store::TextureLoader &loader)
+        : titleScreenDeprecated_(de.scr, artist, loader), deprEnv_(de), store_(store), artist_(artist), loader_(loader) {}
 
     void onStart(const SceneStartContext &ctx) override {
         ctx.entityPool.instantiate(
             std::make_unique<TitleMenuEntity>(titleScreenDeprecated_,store_,artist_));
 
-        texTitleBg_ = deprEnv_.scr.textureLoader().loadFromFile(
+        texTitleBg_ = loader_.loadFromFile(
             "content/textures/texTitleBg.png");
     }
 
@@ -37,6 +37,7 @@ private:
     unique_ptr<artist_api::Texture> texTitleBg_;
     ResourceStore &store_;
     artist_api::Artist &artist_;
+    resource_store::TextureLoader &loader_;
 };
 
 #endif // OS1R_TITLESCREENSCENE_H

@@ -46,7 +46,8 @@ public:
         terrain::Store<terrain::Tile>& storeTile,
         std::unique_ptr<artist_api::Texture> texBlocks,
         ResourceStore &store,
-        artist_api::Artist &artist
+        artist_api::Artist &artist,
+        resource_store::TextureLoader &loader
     ) 
         : m_terrain(terrain)
         , cam(scr)
@@ -59,7 +60,7 @@ public:
         , m_zoneNameShort(zoneNameShort)
         , m_act(act)
         , m_playerStartPosition(playerStartPosition)
-        , m_terrainDrawer(cam, m_terrain.getChunkStore(), m_terrain.getLayout(), 255, storeTile, std::move(texBlocks), artist)
+        , m_terrainDrawer(cam, m_terrain.getChunkStore(), m_terrain.getLayout(), 255, storeTile, std::move(texBlocks), artist, loader)
         , bg(m_terrainDrawer)
         , store_(store)
         , artist_(artist)

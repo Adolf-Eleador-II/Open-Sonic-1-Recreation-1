@@ -19,13 +19,15 @@ public:
         IInputMgr& input,
         Audio& audio,
         ResourceStore &store,
-        artist_api::Artist &artist
+        artist_api::Artist &artist,
+        resource_store::TextureLoader &loader
     ) 
         : m_screen(screen) 
         , m_audio(audio)
         , m_input(input)
         , store_(store)
         , artist_(artist)
+        , loader_(loader)
     {}
 
     Level* loadFromSonic1(ZoneSonic1 zone, int act);
@@ -49,6 +51,7 @@ private:
 private:
     artist_api::Artist &artist_;
     ResourceStore &store_;
+    resource_store::TextureLoader &loader_;
     void reset();
 
     void sonic1LoadTerrain(std::string& sZone, std::string& sZoneAct);

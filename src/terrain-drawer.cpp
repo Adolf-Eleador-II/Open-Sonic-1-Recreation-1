@@ -31,7 +31,7 @@ void terrain::TerrainDrawer::initDebugCollisionView() {
         }
     }
 
-    m_texTiles = m_camera.getScr().textureLoader().loadFromPixelBuffer(
+    m_texTiles = loader_.loadFromPixelBuffer(
         m_imgTiles->bitmap().buffer_, m_imgTiles->bitmap().size_.x);
 }
 
